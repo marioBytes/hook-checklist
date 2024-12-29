@@ -60,3 +60,5 @@ while true; do
             ;;
     esac
 done
+
+exit 0
