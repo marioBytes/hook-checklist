@@ -9,7 +9,8 @@ get_encouraging_message() {
         "Good catch! Future you will thank present you! 🎯"
         "That's the spirit! Clean code is happy code! ✨"
         "Smart move! Take the time you need! 🎨"
-        "Excellence takes patience - you're doing great! 🌈"
+        "Excellence takes patience - you're doing great! 🌈",
+	"Another encouraging messge!"
     )
     random_index=$((RANDOM % ${#messages[@]}))
     echo "${messages[$random_index]}"
