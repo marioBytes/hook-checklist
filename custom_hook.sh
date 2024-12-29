@@ -41,21 +41,21 @@ echo "   • Removed debug statements"
 
 # Get user input
 while true; do
-    read -p $'\nReady to push? (y/n): ' response
+    read -p $'\nReady to push? (y/n): ' response </dev/tty
     case $response in
-        [Yy]* ) 
+        [Yy]* )
             success_msg=$(get_success_message)
             echo -e "\n✅ $success_msg"
             echo "🚀 Proceeding with push..."
             exit 0
             ;;
-        [Nn]* ) 
+        [Nn]* )
             encourage_msg=$(get_encouraging_message)
             echo -e "\n❌ Push cancelled. $encourage_msg"
             echo "📝 Take your time to review and try again when ready!"
             exit 1
             ;;
-        * ) 
+        * )
             echo "Please enter 'y' or 'n'"
             ;;
     esac
