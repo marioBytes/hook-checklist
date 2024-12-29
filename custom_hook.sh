@@ -18,7 +18,6 @@ declare -A checklist=(
     ["Checked for sensitive data"]="false"
 )
 
-# Function to display the current state of the checklist
 display_checklist() {
     echo -e "\n=== Pre-Push Checklist ==="
     local index=1
@@ -29,7 +28,6 @@ display_checklist() {
     done
 }
 
-# Function to toggle a checklist item
 toggle_item() {
     local index=$1
     local current_index=1
@@ -43,7 +41,6 @@ toggle_item() {
     done
 }
 
-# Function to check if all items are checked
 all_checked() {
     for value in "${checklist[@]}"; do
         if [[ $value == "false" ]]; then
@@ -53,7 +50,44 @@ all_checked() {
     return 0
 }
 
-# Main interactive loop
+# Function to get a random encouraging message when canceling
+get_encouraging_message() {
+    messages=(
+        "No worries! Better to catch things early! 💪"
+        "Taking your time leads to better code! 🌟"
+        "Quality over speed - you've got this! 🚀"
+        "Good catch! Future you will thank present you! 🎯"
+        "That's the spirit! Clean code is happy code! ✨"
+        "Smart move! Take the time you need! 🎨"
+        "Excellence takes patience - you're doing great! 🌈",
+    )
+    random_index=$((RANDOM % ${#messages[@]}))
+    echo "${messages[$random_index]}"
+}
+
+# Function to get a random success message
+get_success_message() {
+    messages=(
+        "Awesome work completing your checklist! 🎉"
+        "Look at you, being all professional! 🌟"
+        "Your attention to detail is amazing! 💫"
+        "Great job following best practices! 🏆"
+        "Your future self will thank you! 🙌"
+        "Now that's how it's done! 🚀"
+        "You're making the codebase better! ⭐"
+    )
+    random_index=$((RANDOM % ${#messages[@]}))
+    echo "${messages[$random_index]}"
+}
+
+# Display prompt
+echo -e "\n=== Before Pushing ==="
+echo "🔍 Have you completed your pre-push checklist?"
+echo "   • Reviewed all changes"
+echo "   • Tested your code"
+echo "   • Updated documentation"
+echo "   • Removed debug statements"
+
 while true; do
     clear
     display_checklist
@@ -72,15 +106,20 @@ while true; do
             ;;
         "c")
             if all_checked; then
-                echo -e "\n${GREEN}✅ All items checked! Proceeding with push...${NC}"
+                success_msg=$(get_success_message)
+                echo -e "\n✅${GREEN} $success_msg${NC}"
+                echo -e "\n${GREEN} Proceeding with push...${NC}"
                 exit 0
             else
-                echo -e "\n${RED}⚠️  Please complete all checklist items before continuing.${NC}"
+                encourage_msg=$(get_encouraging_message)
+                echo -e "\n${YELLOW}⚠️  Push cancelled. $encourage_msg ${NC}"
+                echo -e "\n📝${YELLOW} Take your time to review and try again when ready!"
                 read -n 1 -s -r -p "Press any key to continue..."
             fi
             ;;
         "q")
-            echo -e "\n${YELLOW}Push cancelled. Take your time to review and try again when ready!${NC}"
+            encourage_msg=$(get_encouraging_message)
+            echo -e "\n${YELLOW}⚠️  Push cancelled. $encourage_msg ${NC}"
             exit 1
             ;;
         *)
@@ -89,3 +128,5 @@ while true; do
             ;;
     esac
 done
+
+exit 0
